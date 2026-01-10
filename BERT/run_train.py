@@ -12,7 +12,7 @@ from data_helper import load_data, MyDataset, collate_fn
 from tqdm import tqdm
 
 import swanlab   # pip install swanlab
-swanlab.login(api_key="xDnkO2TYqgdkK4iZCFJUK", save=True)
+swanlab.login(api_key="xx", save=True)
 
 def evalute(model, test_dataloader):
     model.eval()
