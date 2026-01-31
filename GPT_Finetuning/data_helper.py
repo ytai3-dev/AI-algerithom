@@ -25,9 +25,8 @@ class MyDataset(Dataset):
         # {'instruction': '你眼中的户晨风先生是个什么样的人？', 'response': '户晨风先生是一位观点犀利且幽默的评论员，他的评论常常能够一针见血地指出问题的核心，同时又不失风趣，让人在思考的同时也能会心一笑。'}
         # '你是谁'   "我是户晨风"
         # [START]  你  是  谁  [SEP]  我  是  户  晨  风  [END]
-        #    0     0   0   0    1   1    1   1  1   1    0
-        #                       我   是  户  晨  风 [END]
-
+        #    0     0   0   0    0   1    1   1  1   1    1
+        #    0     0   0   0   1    1   1   1  1   1
         # [START]  你  是  谁  [SEP]  我  是  户  晨  风
         #    你  是  谁  [SEP]  我  是  户  晨  风  [END]
 
@@ -35,12 +34,11 @@ class MyDataset(Dataset):
         answer_input_ids = self.tokenizer.encode(answer, add_special_tokens=False)
 
         question_input_ids = [self.tokenizer.bos_token_id]+ question_input_ids + [self.tokenizer.sep_token_id]
-        loss_mask = [0] * (len(question_input_ids) - 1)
+        loss_mask = [0] * len(question_input_ids)
         answer_input_ids = answer_input_ids + [self.tokenizer.eos_token_id]
-        loss_mask = loss_mask + [1] * len(answer_input_ids) + [0]
+        loss_mask = loss_mask + [1] * len(answer_input_ids)
         input_ids = question_input_ids + answer_input_ids
         return {"input_ids": input_ids, 'loss_mask': loss_mask}
-
 
 
 def padding_to_max_len(x, max_len, padding_value=0):
